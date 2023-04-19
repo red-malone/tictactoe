@@ -15,15 +15,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'TICTACTOE'),
+      home: MyHomePage(title: 'TICTACTOE'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
-
-
   final String title;
 
   @override
@@ -34,7 +32,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _scoreX=0;
   int _scoreY=0;
   bool _turnO=false;
-  int filled=0;
+  int _filled=0;
   final List<String> _xolist=['','','','','','','','',''];
 
   @override
@@ -49,7 +47,11 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed:(){
                 _clearBoard();
                 },
-              icon: Icon(Icons.refresh))
+              icon: Icon(Icons.fiber_new_rounded)),
+          IconButton(onPressed: (){
+            _clearStateBoard();
+          }, icon:Icon(Icons.refresh_sharp))
+          
         ],
       ),
       backgroundColor: Colors.grey,
@@ -68,6 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget _score(){
     return Expanded(
+      flex: 0,
         child: Container(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -103,7 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
   Widget _grid(){
     return Expanded(
-      flex: 3,
+      flex: 4,
         child:GridView.builder(
           shrinkWrap: true,
             itemCount: 9,
@@ -147,91 +150,91 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       if(!_turnO && _xolist[index] == ''){
         _xolist[index]='x';
-        filled+=1;
+        _filled+=1;
       }
       else if(_turnO && _xolist[index] == ''){
         _xolist[index]='o';
-        filled+=1;
+        _filled+=1;
       }
 
       _turnO=!_turnO;
-      if(filled==3 || filled==5 || filled==7 ||  filled== 8 || filled ==9){
-        _wincheck();
-      }
 
-
+      _wincheck();
     });
   }
 
   void _wincheck(){
-    //row 1
-    if(_xolist[0]==_xolist[1] &&
-    _xolist[0]==_xolist[2] &&_xolist[0]!=''){
-      _showAlertDialog(context,"Winner", _xolist[0]);
+    // check first row
+    if (_xolist[0] == _xolist[1] &&
+        _xolist[0] == _xolist[2] &&
+        _xolist[0] != '') {
+      _showAlertDialog('Winner', _xolist[0]);
       return;
-    }
-    //row2
-    if (_xolist[3]==_xolist[4] &&
-        _xolist[3]==_xolist[5] &&_xolist[3]!=''){
-      _showAlertDialog(context,"Winner", _xolist[3]);
-      return;
-    }
-    //row3
-    if (_xolist[6]==_xolist[7] &&
-        _xolist[6]==_xolist[8] &&_xolist[7]!=''){
-      _showAlertDialog(context,"Winner", _xolist[7]);
-      return;
-    }
-    //col1
-    if (_xolist[0]==_xolist[3] &&
-        _xolist[0]==_xolist[6] &&_xolist[0]!=''){
-      _showAlertDialog(context,"Winner", _xolist[0]);
-      return;
-    }
-    //col2
-    if (_xolist[1]==_xolist[4] &&
-        _xolist[1]==_xolist[7] &&_xolist[1]!=''){
-      _showAlertDialog(context,"Winner", _xolist[1]);
-      return;
-    }
-    //col3
-    if(_xolist[2]==_xolist[5] &&
-        _xolist[2]==_xolist[8] &&_xolist[0]!=''){
-      _showAlertDialog(context,"Winner", _xolist[2]);
-      return;
-    }
-    if(_xolist[0]==_xolist[4] && _xolist[0]==_xolist[8] &&_xolist[0]==''){
-      _showAlertDialog(context,"Winner", _xolist[0]);
-      return;
-    }
-    if(_xolist[2]==_xolist[4] && _xolist[2]==_xolist[6] &&_xolist[2]==''){
-      _showAlertDialog(context,"Winner", _xolist[0]);
-      return;
-    }
-    if(filled==9){
-      _showAlertDialog(context, "Draw",'');
     }
 
+    // check second row
+    if (_xolist[3] == _xolist[4] &&
+        _xolist[3] == _xolist[5] &&
+        _xolist[3] != '') {
+      _showAlertDialog('Winner', _xolist[3]);
+      return;
+    }
+
+    // check third row
+    if (_xolist[6] == _xolist[7] &&
+        _xolist[6] == _xolist[8] &&
+        _xolist[6] != '') {
+      _showAlertDialog('Winner', _xolist[6]);
+      return;
+    }
+
+    // check first column
+    if (_xolist[0] == _xolist[3] &&
+        _xolist[0] == _xolist[6] &&
+        _xolist[0] != '') {
+      _showAlertDialog('Winner', _xolist[0]);
+      return;
+    }
+
+    // check second column
+    if (_xolist[1] == _xolist[4] &&
+        _xolist[1] == _xolist[7] &&
+        _xolist[1] != '') {
+      _showAlertDialog('Winner', _xolist[1]);
+      return;
+    }
+
+    // check third column
+    if (_xolist[2] == _xolist[5] &&
+        _xolist[2] == _xolist[8] &&
+        _xolist[2] != '') {
+      _showAlertDialog('Winner', _xolist[2]);
+      return;
+    }
+
+    // check diagonal
+    if (_xolist[0] == _xolist[4] &&
+        _xolist[0] == _xolist[8] &&
+        _xolist[0] != '') {
+      _showAlertDialog('Winner', _xolist[0]);
+      return;
+    }
+
+    // check diagonal
+    if (_xolist[2] == _xolist[4] &&
+        _xolist[2] == _xolist[6] &&
+        _xolist[2] != '') {
+      _showAlertDialog('Winner', _xolist[2]);
+      return;
+    }
+
+    if (_filled == 9) {
+      _showAlertDialog('Draw', '');
+    }
   }
 
-  /*void _showAlertDialog(String title, String winner) {
-    showAlertDialog(
-        context: context,
-        title: title,
-        content: winner == '' ? 'The match ended in a draw' : 'The winner is ${winner.toUpperCase()}',
-        defaultActionText: 'OK',
-        onOkPressed: () {
-          if (winner == 'o') {
-             _scoreY+=1;
-          } else if (winner == 'x') {
-            _scoreX+= 1;
-          }
-          _clearBoard();
-          Navigator.of(context).pop();
-        }
-    );
-  }*/
-  void _showAlertDialog(BuildContext context, String title, String winner) {
+
+  void _showAlertDialog(String title, String winner) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -242,6 +245,12 @@ class _MyHomePageState extends State<MyHomePage> {
             TextButton(
               child: Text('OK'),
               onPressed: () {
+                if (winner == 'o') {
+                  _scoreY+=1;
+                } else if (winner == 'x') {
+                  _scoreX+= 1;
+                }
+                _clearBoard();
                 Navigator.of(context).pop();
               },
             ),
@@ -259,7 +268,17 @@ class _MyHomePageState extends State<MyHomePage> {
         _xolist[i]='';
       }
     });
-    filled=0;
+    _filled=0;
+  }
+  void _clearStateBoard(){
+    setState(() {
+      for (int i=0;i<9;i++){
+        _xolist[i]='';
+      }
+    });
+    _scoreY=0;
+    _scoreX=0;
+    _filled=0;
   }
 
 }
